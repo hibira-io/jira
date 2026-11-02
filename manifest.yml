@@ -1,0 +1,36 @@
+modules:
+  trigger:
+    - key: hibira-issue-events
+      function: on-event
+      events:
+        - avi:jira:created:issue
+        - avi:jira:updated:issue
+        - avi:jira:deleted:issue
+        - avi:jira:commented:issue
+  jira:adminPage:
+    - key: hibira-settings
+      resource: settings
+      resolver:
+        function: resolver
+      render: native
+      title: Hibira Realtime
+  function:
+    - key: on-event
+      handler: index.onEvent
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: settings
+    path: src/frontend/index.jsx
+app:
+  runtime:
+    name: nodejs22.x
+  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
+permissions:
+  scopes:
+    - read:jira-work
+    - storage:app
+  external:
+    fetch:
+      backend:
+        - '*.hibira.io'
